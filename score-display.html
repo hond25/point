@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スコア表示</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #1e1e1e;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+        }
+        .score-display {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .team-score {
+            background-color: #2d2d2d;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .team-score.updated {
+            background-color: #3d3d3d;
+        }
+        .team-name {
+            font-size: 1.2em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        .score {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #fff;
+        }
+        .timestamp {
+            font-size: 0.8em;
+            color: #666;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="score-display">
+        <div class="team-score">
+            <div class="team-name">チーム1</div>
+            <div class="score" id="score1">0</div>
+        </div>
+        <div class="team-score">
+            <div class="team-name">チーム2</div>
+            <div class="score" id="score2">0</div>
+        </div>
+        <div class="team-score">
+            <div class="team-name">チーム3</div>
+            <div class="score" id="score3">0</div>
+        </div>
+        <div class="team-score">
+            <div class="team-name">チーム4</div>
+            <div class="score" id="score4">0</div>
+        </div>
+    </div>
+    <div class="timestamp" id="timestamp"></div>
+
+    <script>
+        // BroadcastChannelの設定
+        const scoreChannel = new BroadcastChannel('score-updates');
+
+        // スコアの更新を監視する関数
+        function updateScores() {
+            for (let i = 1; i <= 4; i++) {
+                const score = localStorage.getItem(`team${i}Score`) || '0';
+                document.getElementById(`score${i}`).textContent = score;
+            }
+            updateTimestamp();
+        }
+
+        // タイムスタンプを更新する関数
+        function updateTimestamp() {
+            const now = new Date();
+            document.getElementById('timestamp').textContent = 
+                `最終更新: ${now.toLocaleTimeString()}`;
+        }
+
+        // スコア更新時のアニメーション
+        function highlightUpdate(teamNumber) {
+            const teamElement = document.querySelector(`.team-score:nth-child(${teamNumber})`);
+            teamElement.classList.add('updated');
+            setTimeout(() => {
+                teamElement.classList.remove('updated');
+            }, 1000);
+        }
+
+        // BroadcastChannelからのメッセージを受け取る
+        scoreChannel.onmessage = (event) => {
+            const data = event.data;
+            if (data.type === 'score-update') {
+                document.getElementById(`score${data.team}`).textContent = data.score;
+                highlightUpdate(data.team);
+                updateTimestamp();
+            } else if (data.type === 'score-reset') {
+                document.getElementById(`score${data.team}`).textContent = '0';
+                highlightUpdate(data.team);
+                updateTimestamp();
+            }
+        };
+
+        // 初回実行
+        updateScores();
+    </script>
+</body>
+</html> 

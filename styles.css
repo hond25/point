@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fafafa;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.scoreboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    padding: 20px;
+}
+
+.team {
+    background-color: white;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h2 {
+    color: #444;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.score {
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: #333;
+    margin: 25px 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+button {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    background-color: #ffd2b5;
+    color: #666;
+}
+
+button:not(.reset):hover {
+    background-color: #ffd2b5;
+    border-color: #ccc;
+}
+
+button[onclick*="-"] {
+    color: #666;
+    background-color: #b0d7ff;
+    border-color: #e9ecef;
+}
+
+button[onclick*="-"]:hover {
+    background-color: #b0d7ff;
+    border-color: #dee2e6;
+}
+
+button[onclick*="+"] {
+    color: #666;
+    background-color: #ffd2b5;
+    border-color: #e3f2fd;
+}
+
+button[onclick*="+"]:hover {
+    background-color: #ffd2b5;
+    border-color: #bbdefb;
+}
+
+.reset {
+    grid-column: 1 / -1;
+    background-color: #f8f9fa;
+    color: #666;
+    border: 1px solid #e9ecef;
+    margin-top: 5px;
+}
+
+.reset:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+} 
